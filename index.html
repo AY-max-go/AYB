@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArcGIS - essabiri.com</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Animation d'entrée */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        /* Header / Message de bienvenue */
+        .welcome-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.8s ease;
+            border-left: 5px solid #4CAF50;
+        }
+
+        .welcome-text {
+            font-size: 1.3rem;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .welcome-text i {
+            color: #4CAF50;
+            margin-right: 10px;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* Section téléchargement */
+        .download-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .download-title {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .download-link-container {
+            background: #f5f5f5;
+            border-radius: 50px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            border: 2px dashed #4CAF50;
+        }
+
+        .link-text {
+            font-size: 1.1rem;
+            color: #333;
+            word-break: break-all;
+        }
+
+        .link-text i {
+            color: #2196F3;
+            margin-right: 10px;
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+            background: linear-gradient(45deg, #45a049, #4CAF50);
+        }
+
+        .download-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Section étapes d'installation */
+        .steps-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .steps-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .steps-title:after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #4CAF50, #2196F3);
+            margin: 10px auto;
+            border-radius: 3px;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .step-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            background: linear-gradient(45deg, #4CAF50, #2196F3);
+            color: white;
+            padding: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .step-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover .step-image {
+            transform: scale(1.05);
+        }
+
+        .step-caption {
+            padding: 15px;
+            text-align: center;
+            font-weight: 500;
+            color: #555;
+        }
+
+        /* Modal pour agrandir les images */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 80%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid white;
+            border-radius: 5px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #4CAF50;
+        }
+
+        .modal-caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Section contact rapide */
+        .contact-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+
+        .contact-btn {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+            transition: all 0.3s ease;
+            font-size: 24px;
+            border: none;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.6);
+        }
+
+        .contact-tooltip {
+            position: absolute;
+            right: 70px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .contact-btn:hover .contact-tooltip {
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a2e;
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            text-align: center;
+            border-top: 3px solid #4CAF50;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .copyright {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .copyright i {
+            color: #ff6b6b;
+            margin: 0 5px;
+        }
+
+        .author {
+            font-size: 1.3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #4CAF50, #2196F3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            padding: 5px 20px;
+            border-radius: 30px;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .welcome-text {
+                font-size: 1.1rem;
+            }
+            
+            .download-link-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                max-width: 95%;
+            }
+        }
+    </style>
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Message de bienvenue -->
+        <div class="welcome-card">
+            <div class="welcome-text">
+                <i class="fas fa-hand-peace"></i> 
+                <span class="highlight">Bonjour</span>, vous trouvez ici le lien pour télécharger le logiciel ArcGIS 
+                <i class="fas fa-map"></i> aussi les étapes d'installation. Si vous trouvez des difficultés vous pouvez me contacter 
+                <i class="fas fa-smile"></i>
+            </div>
+        </div>
+
+        <!-- Section téléchargement -->
+        <div class="download-section">
+            <div class="download-title">
+                <i class="fas fa-download"></i>
+                Premièrement vous téléchargez ArcGIS via ce lien :
+            </div>
+            <div class="download-link-container">
+                <div class="link-text">
+                    <i class="fas fa-link"></i>
+                    https://igetintopc.com/waiting-resource.php
+                </div>
+                <a href="#" class="download-btn" id="downloadBtn">
+                    <i class="fas fa-cloud-download-alt"></i>
+                    Télécharger
+                </a>
+            </div>
+            <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
+                <i class="fas fa-info-circle"></i> 
+                Cliquez sur le bouton pour commencer le téléchargement. <b>Pour extraire le fichier utiliser le mot de passe : igetintopc.com</b>
+            </p>
+        </div>
+
+        <!-- Section étapes d'installation -->
+        <div class="steps-section">
+            <h2 class="steps-title">
+                <i class="fas fa-images"></i> 
+                Étapes d'installation
+            </h2>
+            <div class="steps-grid" id="stepsGrid">
+                <!-- Les étapes seront générées par JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de contact flottant -->
+    <div class="contact-float">
+        <div class="contact-btn" id="contactBtn">
+            <i class="fas fa-envelope"></i>
+            <span class="contact-tooltip">Contactez-moi via whatsapp</span>
+        </div>
+    </div>
+
+    <!-- Modal pour agrandir les images -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div id="modalCaption" class="modal-caption"></div>
+    </div>
+    <div class="container">
+        <!-- Message de bienvenue -->
+        <div class="welcome-card">
+            <div class="welcome-text">
+                <i class="fas fa-hand-peace"></i> 
+                <span class="highlight">Félicitation !</span>
+                <i class="fas fa-smile"></i>
+            </div>
+    </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="copyright">
+                <i class="far fa-copyright"></i> 2026 
+                <i class="fas fa-map-marker-alt"></i> Tous droits réservés
+            </div>
+            <div class="author">
+                <i class="fas fa-code"></i> By AYOUB ESSABIRI 
+                <i class="fas fa-heart" style="color: #ff6b6b;"></i>
+            </div>
+            <p style="margin-top: 15px; color: #888; font-size: 0.8rem;">
+                <i class="fas fa-graduation-cap"></i> IEGS 1
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration des étapes d'installation
+        const installationSteps = [
+            {
+                number: 1,
+                image: "1.png",
+                caption: "Étape 1 : Après l'installation, vous faites extraire le dossier. S'il demande un code, écrivez: igetintopc.com"
+            },
+            {
+                number: 2,
+                image: "2.png",
+                caption: "Étape 2 : Vous allez trouver l'application dans le dossier extré"
+            },
+            {
+                number: 3,
+                image: "3.png",
+                caption: "Étape 3 : Vous laissez les choses par défaut et cliquez juste sur Next puis Intall"
+            },
+            {
+                number: 4,
+                image: "4.png",
+                caption: "Étape 4 : Vous laissez le carré coché et cliquez sur Close"
+            },
+            {
+                number: 5,
+                image: "5.png",
+                caption: "Étape 5 : Après il va vous afficher cette fenêtre automatiquement, vous cliquez toujours sur Next et laissez par défaut"
+            },
+            {
+                number: 6,
+                image: "6.png",
+                caption: "Étape 5 : Choisir I accept puis Next puis Install"
+            },
+            {
+                number: 7,
+                image: "7.png",
+                caption: "Étape 6 : Cliquez sur Finish"
+            },
+            {
+                number: 8,
+                image: "8.png",
+                caption: "Étape 6 : Vous revenez au dossier extré et vous ouvrez le dossier Crack puis vous copiez le Crack qui est là"
+            },
+            {
+                number: 9,
+                image: "9.png",
+                caption: "Étape 6 : Vous cherchez l'app ArcMap et vous ouvrez l'amplacement du fichier"
+            },
+            {
+                number: 10,
+                image: "10.png",
+                caption: "Étape 6 : Vous faites Bouton droit sur la même application et cliquez encore sur Ouvrir l'emplacement du fichier"
+            },
+            {
+                number: 11,
+                image: "11.png",
+                caption: "Étape 6 : Vous collez le crack que vous avez copié"
+            },
+            {
+                number: 12,
+                image: "12.png",
+                caption: "Étape 6 : Après ça vous pouvez lancer votre application."
+            }
+        ];
+
+        // Générer les cartes d'étapes
+        const stepsGrid = document.getElementById('stepsGrid');
+        
+        installationSteps.forEach(step => {
+            const stepCard = document.createElement('div');
+            stepCard.className = 'step-card';
+            stepCard.innerHTML = `
+                <div class="step-number">Étape ${step.number}</div>
+                <img src="${step.image}" alt="Étape ${step.number}" class="step-image" loading="lazy">
+                <div class="step-caption">${step.caption}</div>
+            `;
+            
+            // Ajouter l'événement pour agrandir l'image
+            stepCard.addEventListener('click', function() {
+                const modal = document.getElementById('imageModal');
+                const modalImg = document.getElementById('modalImage');
+                const captionText = document.getElementById('modalCaption');
+                
+                modal.style.display = "block";
+                modalImg.src = step.image;
+                captionText.innerHTML = step.caption;
+            });
+            
+            stepsGrid.appendChild(stepCard);
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('imageModal');
+        const closeBtn = document.getElementsByClassName('close-modal')[0];
+
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Gestionnaire de téléchargement
+        document.getElementById('downloadBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Simulation de téléchargement
+            const downloadUrl = "https://igetintopc.com/waiting-resource.php";
+            
+            // Afficher une notification (simulée)
+            alert("Le téléchargement va commencer...\nURL : " + downloadUrl);
+            
+            // Ouvrir le lien dans un nouvel onglet
+            window.open(downloadUrl, '_blank');
+            
+            // Animation sur le bouton
+            this.style.transform = "scale(0.95)";
+            setTimeout(() => {
+                this.style.transform = "";
+            }, 200);
+        });
+
+        // Gestionnaire de contact
+        document.getElementById('contactBtn').addEventListener('click', function() {
+            // Simuler une ouverture de modal de contact
+            const email = "ayoub.essabiri@example.com";
+            const subject = "Aide pour installation ArcGIS";
+            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+            
+            // Ouvrir le client mail par défaut
+            window.location.href = mailtoLink;
+            
+            // Feedback visuel
+            this.style.backgroundColor = "#4CAF50";
+            setTimeout(() => {
+                this.style.background = "";
+            }, 300);
+        });
+
+        // Ajouter un effet de scroll fluide
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Message de bienvenue avec animation
+        console.log("Bienvenue sur la page d'aide d'ArcGIS !");
+    </script>
+</body>
+</html>
