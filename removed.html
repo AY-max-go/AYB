@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fichier non disponible - AYOUB ESSABIRI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(145deg, #0c0b1a 0%, #1a1a2e 50%, #16213e 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animation des étoiles */
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.2; transform: scale(0.8); }
+        }
+
+        @keyframes shootingStar {
+            0% {
+                transform: translateX(0) translateY(0) rotate(45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(200px) translateY(200px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes blink {
+            0%, 90%, 100% { transform: scaleY(1); }
+            95% { transform: scaleY(0.1); }
+        }
+
+        /* Ciel étoilé */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            animation: twinkle var(--duration) infinite;
+        }
+
+        .star:nth-child(1) { width: 3px; height: 3px; top: 10%; left: 5%; --duration: 2s; }
+        .star:nth-child(2) { width: 2px; height: 2px; top: 15%; left: 15%; --duration: 3s; }
+        .star:nth-child(3) { width: 4px; height: 4px; top: 20%; left: 25%; --duration: 1.5s; }
+        .star:nth-child(4) { width: 2px; height: 2px; top: 25%; left: 35%; --duration: 2.5s; }
+        .star:nth-child(5) { width: 3px; height: 3px; top: 30%; left: 45%; --duration: 2s; }
+        .star:nth-child(6) { width: 2px; height: 2px; top: 35%; left: 55%; --duration: 3.5s; }
+        .star:nth-child(7) { width: 4px; height: 4px; top: 40%; left: 65%; --duration: 1.8s; }
+        .star:nth-child(8) { width: 2px; height: 2px; top: 45%; left: 75%; --duration: 2.2s; }
+        .star:nth-child(9) { width: 3px; height: 3px; top: 50%; left: 85%; --duration: 2.8s; }
+        .star:nth-child(10) { width: 2px; height: 2px; top: 55%; left: 95%; --duration: 3.2s; }
+        .star:nth-child(11) { width: 3px; height: 3px; top: 60%; left: 10%; --duration: 2.4s; }
+        .star:nth-child(12) { width: 2px; height: 2px; top: 65%; left: 20%; --duration: 1.9s; }
+        .star:nth-child(13) { width: 4px; height: 4px; top: 70%; left: 30%; --duration: 2.7s; }
+        .star:nth-child(14) { width: 2px; height: 2px; top: 75%; left: 40%; --duration: 3.1s; }
+        .star:nth-child(15) { width: 3px; height: 3px; top: 80%; left: 50%; --duration: 2.3s; }
+        .star:nth-child(16) { width: 2px; height: 2px; top: 85%; left: 60%; --duration: 2.9s; }
+        .star:nth-child(17) { width: 3px; height: 3px; top: 90%; left: 70%; --duration: 1.7s; }
+        .star:nth-child(18) { width: 2px; height: 2px; top: 95%; left: 80%; --duration: 3.3s; }
+
+        /* Étoile filante */
+        .shooting-star {
+            position: absolute;
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0));
+            top: 20%;
+            left: -10%;
+            transform: rotate(45deg);
+            animation: shootingStar 4s linear infinite;
+            opacity: 0;
+        }
+
+        .shooting-star::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px white;
+        }
+
+        .shooting-star:nth-child(20) {
+            top: 40%;
+            animation-delay: 2s;
+        }
+
+        .shooting-star:nth-child(21) {
+            top: 60%;
+            animation-delay: 4s;
+        }
+
+        /* Conteneur principal */
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+            min-height: 80vh;
+        }
+
+        /* Oiseau Bouma */
+        .bird-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+            animation: float 4s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        .bird {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Corps de l'oiseau */
+        .bird-body {
+            position: absolute;
+            width: 180px;
+            height: 200px;
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            border-radius: 50% 50% 40% 40%;
+            top: 50px;
+            left: 60px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            border: 3px solid #ecf0f1;
+            overflow: hidden;
+        }
+
+        /* Ventre plus clair */
+        .bird-belly {
+            position: absolute;
+            width: 120px;
+            height: 140px;
+            background: rgba(236, 240, 241, 0.2);
+            border-radius: 50%;
+            top: 30px;
+            left: 30px;
+        }
+
+        /* Tête */
+        .bird-head {
+            position: absolute;
+            width: 100px;
+            height: 110px;
+            background: linear-gradient(145deg, #34495e, #2c3e50);
+            border-radius: 50% 50% 40% 40%;
+            top: -10px;
+            left: 100px;
+            border: 3px solid #ecf0f1;
+            z-index: 5;
+        }
+
+        /* Bec */
+        .bird-beak {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 35px solid #f39c12;
+            transform: rotate(45deg);
+            top: 40px;
+            left: 165px;
+            z-index: 6;
+        }
+
+        .bird-beak-bottom {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 25px solid #e67e22;
+            transform: rotate(45deg);
+            top: 60px;
+            left: 170px;
+            z-index: 5;
+        }
+
+        /* Yeux */
+        .eye-left, .eye-right {
+            position: absolute;
+            width: 25px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            top: 30px;
+            z-index: 7;
+            border: 2px solid #2c3e50;
+            overflow: hidden;
+            animation: blink 4s infinite;
+        }
+
+        .eye-left {
+            left: 120px;
+        }
+
+        .eye-right {
+            left: 170px;
+        }
+
+        .pupil {
+            position: absolute;
+            width: 12px;
+            height: 18px;
+            background: #2c3e50;
+            border-radius: 50%;
+            transition: all 0.1s ease;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        .pupil-left {
+            top: 6px;
+            left: 6px;
+        }
+
+        .pupil-right {
+            top: 6px;
+            left: 6px;
+        }
+
+        /* Sourcils */
+        .eyebrow-left, .eyebrow-right {
+            position: absolute;
+            width: 30px;
+            height: 8px;
+            background: #2c3e50;
+            border-radius: 10px;
+            top: 20px;
+            z-index: 8;
+            transform-origin: center;
+            transition: transform 0.2s ease;
+        }
+
+        .eyebrow-left {
+            left: 118px;
+            transform: rotate(-10deg);
+        }
+
+        .eyebrow-right {
+            left: 168px;
+            transform: rotate(10deg);
+        }
+
+        .bird-container:hover .eyebrow-left {
+            transform: rotate(-20deg);
+        }
+
+        .bird-container:hover .eyebrow-right {
+            transform: rotate(20deg);
+        }
+
+        /* Ailes */
+        .wing {
+            position: absolute;
+            width: 100px;
+            height: 140px;
+            background: linear-gradient(145deg, #2c3e50, #1e2b3a);
+            border-radius: 50% 50% 20% 20%;
+            top: 100px;
+            border: 3px solid #ecf0f1;
+            transition: transform 0.3s ease;
+        }
+
+        .wing-left {
+            left: 20px;
+            transform: rotate(15deg);
+            transform-origin: top right;
+        }
+
+        .wing-right {
+            left: 180px;
+            transform: rotate(-15deg);
+            transform-origin: top left;
+        }
+
+        .bird-container:hover .wing-left {
+            transform: rotate(30deg) scale(1.1);
+        }
+
+        .bird-container:hover .wing-right {
+            transform: rotate(-30deg) scale(1.1);
+        }
+
+        /* Message d'erreur */
+        .message-card {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 40px;
+            margin: 20px;
+            max-width: 700px;
+            width: 100%;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            text-align: center;
+            z-index: 20;
+        }
+
+        .error-code {
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255,107,107,0.3);
+        }
+
+        .sorry-message {
+            font-size: 2.5rem;
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px rgba(255,215,0,0.5);
+        }
+
+        .main-message {
+            font-size: 1.8rem;
+            color: #ecf0f1;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .highlight {
+            color: #ff6b6b;
+            font-weight: bold;
+            
+        }
+
+        .contact-prompt {
+            font-size: 1.5rem;
+            color: #a8e6cf;
+            margin: 25px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .contact-prompt i {
+            color: #ffd700;
+            margin: 0 10px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .btn-contact {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: #2c3e50;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            border: 2px solid #ffd700;
+            box-shadow: 0 5px 20px rgba(255,107,107,0.3);
+        }
+
+        .btn-contact:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255,215,0,0.4);
+        }
+
+        /* Footer */
+        .footer {
+            background: #0a0a1a;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 3px solid #ffd700;
+            position: relative;
+            z-index: 30;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .copyright {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #a8e6cf;
+        }
+
+        .copyright i {
+            color: #ff6b6b;
+            margin: 0 5px;
+        }
+
+        .author {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            padding: 5px 30px;
+            border-radius: 30px;
+            background-color: rgba(255,215,0,0.1);
+        }
+
+        /* Lune */
+        .moon {
+            position: fixed;
+            top: 50px;
+            right: 50px;
+            width: 60px;
+            height: 60px;
+            background: #ffd700;
+            border-radius: 50%;
+            box-shadow: 0 0 50px #ffd700;
+            z-index: 5;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .moon::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 80px;
+            height: 80px;
+            background: transparent;
+            border-radius: 50%;
+            box-shadow: -15px -5px 0 0 rgba(255,215,0,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .bird-container {
+                width: 200px;
+                height: 200px;
+            }
+
+            .message-card {
+                padding: 20px;
+            }
+
+            .sorry-message {
+                font-size: 1.8rem;
+            }
+
+            .main-message {
+                font-size: 1.3rem;
+            }
+
+            .contact-prompt {
+                font-size: 1.1rem;
+            }
+
+            .moon {
+                top: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Ciel étoilé -->
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+    </div>
+
+    <!-- Lune -->
+    <div class="moon"></div>
+
+    <!-- Conteneur principal -->
+    <div class="container">
+        <!-- Oiseau Bouma -->
+        <div class="bird-container" id="birdContainer">
+            <div class="bird">
+                <div class="bird-head"></div>
+                <div class="bird-body">
+                    <div class="bird-belly"></div>
+                </div>
+                <div class="wing wing-left"></div>
+                <div class="wing wing-right"></div>
+                <div class="bird-beak"></div>
+                <div class="bird-beak-bottom"></div>
+                <div class="eye-left">
+                    <div class="pupil pupil-left" id="pupilLeft"></div>
+                </div>
+                <div class="eye-right">
+                    <div class="pupil pupil-right" id="pupilRight"></div>
+                </div>
+                <div class="eyebrow-left"></div>
+                <div class="eyebrow-right"></div>
+            </div>
+        </div>
+
+        <!-- Message d'erreur -->
+        <div class="message-card">
+            <div class="error-code">404</div>
+            <div class="sorry-message">
+                <i class="fas fa-hourglass-end"></i> SORRY <i class="fas fa-hourglass-end"></i>
+            </div>
+            <div class="main-message">
+                <span class="highlight">U are late</span>, I did remove this file.
+            </div>
+            <div class="contact-prompt">
+                <i class="fas fa-hand-point-right"></i> Please contact me <i class="fas fa-hand-point-left"></i>
+            </div>
+            <button class="btn-contact" id="contactBtn">
+                <i class="fas fa-envelope"></i> Contact Now
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="copyright">
+                <i class="far fa-copyright"></i> 2026 
+                <i class="fas fa-copyright"></i> Tous droits réservés
+            </div>
+            <div class="author">
+                <i class="fas fa-code"></i> By AYOUB ESSABIRI 
+                <i class="fas fa-heart" style="color: #ffd700;"></i>
+            </div>
+            <p style="margin-top: 15px; color: #888; font-size: 0.8rem;">
+                <i class="fas fa-map"></i> IEGS
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Mouvement des yeux qui suivent la souris
+        const birdContainer = document.getElementById('birdContainer');
+        const pupilLeft = document.getElementById('pupilLeft');
+        const pupilRight = document.getElementById('pupilRight');
+        const eyeLeft = document.querySelector('.eye-left');
+        const eyeRight = document.querySelector('.eye-right');
+
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            // Position de l'oiseau
+            const birdRect = birdContainer.getBoundingClientRect();
+            const birdX = birdRect.left + birdRect.width / 2;
+            const birdY = birdRect.top + birdRect.height / 2;
+            
+            // Calcul de l'angle entre l'oiseau et la souris
+            const angle = Math.atan2(mouseY - birdY, mouseX - birdX);
+            
+            // Distance maximale de déplacement des pupilles
+            const maxDistance = 8;
+            
+            // Calcul du déplacement
+            const moveX = Math.cos(angle) * maxDistance;
+            const moveY = Math.sin(angle) * maxDistance;
+            
+            // Appliquer le mouvement aux deux pupilles
+            pupilLeft.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            pupilRight.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
+
+        // Effet de surprise quand on clique sur l'oiseau
+        birdContainer.addEventListener('click', () => {
+            // Agrandir les pupilles (surprise)
+            pupilLeft.style.width = '18px';
+            pupilLeft.style.height = '24px';
+            pupilRight.style.width = '18px';
+            pupilRight.style.height = '24px';
+            
+            // Faire bouger les ailes plus vite
+            const wings = document.querySelectorAll('.wing');
+            wings.forEach(wing => {
+                wing.style.transition = 'transform 0.1s ease';
+                wing.style.transform = wing.classList.contains('wing-left') ? 'rotate(45deg) scale(1.2)' : 'rotate(-45deg) scale(1.2)';
+            });
+            
+            // Revenir à la normale après 500ms
+            setTimeout(() => {
+                pupilLeft.style.width = '12px';
+                pupilLeft.style.height = '18px';
+                pupilRight.style.width = '12px';
+                pupilRight.style.height = '18px';
+                
+                wings.forEach(wing => {
+                    wing.style.transform = wing.classList.contains('wing-left') ? 'rotate(15deg)' : 'rotate(-15deg)';
+                });
+            }, 500);
+        });
+
+        // Bouton de contact
+        document.getElementById('contactBtn').addEventListener('click', () => {
+            window.location.href = "https://ay-max-go.github.io/AYB/";
+        });
+
+        // Animation des étoiles (déjà gérée par CSS)
+        // Ajouter des étoiles supplémentaires aléatoirement
+        function addRandomStars() {
+            const starsContainer = document.querySelector('.stars');
+            for (let i = 0; i < 30; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.cssText = `
+                    width: ${Math.random() * 4 + 1}px;
+                    height: ${Math.random() * 4 + 1}px;
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    --duration: ${Math.random() * 3 + 1}s;
+                    animation-delay: ${Math.random() * 5}s;
+                `;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Appeler la fonction pour ajouter plus d'étoiles
+        addRandomStars();
+    </script>
+</body>
+</html>
