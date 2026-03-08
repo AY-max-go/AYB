@@ -13,10 +13,142 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            position: relative;
+            background: transparent; /* Changé pour laisser voir les étoiles */
+        }
+
+        /* ===== BACKGROUND ÉTOILÉ ===== */
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.2; transform: scale(0.8); }
+        }
+
+        @keyframes shootingStar {
+            0% {
+                transform: translateX(0) translateY(0) rotate(45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(200px) translateY(200px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Conteneur du ciel étoilé */
+        .stars-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none; /* Permet de cliquer à travers */
+            background: linear-gradient(145deg, #0c0b1a 0%, #1a1a2e 50%, #16213e 100%);
+        }
+
+        /* Étoiles fixes */
+        .stars-background .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            animation: twinkle var(--duration) infinite;
+        }
+
+        /* Positions des étoiles */
+        .stars-background .star:nth-child(1) { width: 3px; height: 3px; top: 5%; left: 3%; --duration: 2s; }
+        .stars-background .star:nth-child(2) { width: 2px; height: 2px; top: 12%; left: 10%; --duration: 3s; }
+        .stars-background .star:nth-child(3) { width: 4px; height: 4px; top: 18%; left: 20%; --duration: 1.5s; }
+        .stars-background .star:nth-child(4) { width: 2px; height: 2px; top: 25%; left: 30%; --duration: 2.5s; }
+        .stars-background .star:nth-child(5) { width: 3px; height: 3px; top: 32%; left: 40%; --duration: 2s; }
+        .stars-background .star:nth-child(6) { width: 2px; height: 2px; top: 38%; left: 50%; --duration: 3.5s; }
+        .stars-background .star:nth-child(7) { width: 4px; height: 4px; top: 45%; left: 60%; --duration: 1.8s; }
+        .stars-background .star:nth-child(8) { width: 2px; height: 2px; top: 52%; left: 70%; --duration: 2.2s; }
+        .stars-background .star:nth-child(9) { width: 3px; height: 3px; top: 58%; left: 80%; --duration: 2.8s; }
+        .stars-background .star:nth-child(10) { width: 2px; height: 2px; top: 65%; left: 90%; --duration: 3.2s; }
+        .stars-background .star:nth-child(11) { width: 3px; height: 3px; top: 72%; left: 15%; --duration: 2.4s; }
+        .stars-background .star:nth-child(12) { width: 2px; height: 2px; top: 78%; left: 25%; --duration: 1.9s; }
+        .stars-background .star:nth-child(13) { width: 4px; height: 4px; top: 85%; left: 35%; --duration: 2.7s; }
+        .stars-background .star:nth-child(14) { width: 2px; height: 2px; top: 92%; left: 45%; --duration: 3.1s; }
+        .stars-background .star:nth-child(15) { width: 3px; height: 3px; top: 95%; left: 55%; --duration: 2.3s; }
+        .stars-background .star:nth-child(16) { width: 2px; height: 2px; top: 88%; left: 65%; --duration: 2.9s; }
+        .stars-background .star:nth-child(17) { width: 3px; height: 3px; top: 82%; left: 75%; --duration: 1.7s; }
+        .stars-background .star:nth-child(18) { width: 2px; height: 2px; top: 75%; left: 85%; --duration: 3.3s; }
+
+        /* Étoiles filantes */
+        .stars-background .shooting-star {
+            position: absolute;
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0));
+            top: 20%;
+            left: -10%;
+            transform: rotate(45deg);
+            animation: shootingStar 4s linear infinite;
+            opacity: 0;
+        }
+
+        .stars-background .shooting-star::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px white;
+        }
+
+        .stars-background .shooting-star:nth-child(20) {
+            top: 40%;
+            animation-delay: 2s;
+        }
+
+        .stars-background .shooting-star:nth-child(21) {
+            top: 60%;
+            animation-delay: 4s;
+        }
+
+        .stars-background .shooting-star:nth-child(22) {
+            top: 80%;
+            animation-delay: 1s;
+        }
+
+        /* Lune décorative */
+        .moon-decor {
+            position: fixed;
+            top: 50px;
+            right: 50px;
+            width: 60px;
+            height: 60px;
+            background: #ffd700;
+            border-radius: 50%;
+            box-shadow: 0 0 50px #ffd700;
+            z-index: 1;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .moon-decor::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 80px;
+            height: 80px;
+            background: transparent;
+            border-radius: 50%;
+            box-shadow: -15px -5px 0 0 rgba(255,215,0,0.3);
         }
 
         /* Animation d'entrée */
@@ -36,15 +168,18 @@
             margin: 0 auto;
             padding: 20px;
             flex: 1;
+            position: relative;
+            z-index: 10; /* Au-dessus des étoiles */
         }
 
         /* Header / Message de bienvenue */
         .welcome-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 30px;
             margin: 30px 0;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             animation: fadeInUp 0.8s ease;
             border-left: 5px solid #4CAF50;
         }
@@ -69,11 +204,12 @@
 
         /* Section téléchargement */
         .download-section {
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 30px;
             margin: 30px 0;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             animation: fadeInUp 0.8s ease 0.2s both;
         }
 
@@ -193,11 +329,12 @@
 
         /* Section étapes d'installation */
         .steps-section {
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 30px;
             margin: 30px 0;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             animation: fadeInUp 0.8s ease 0.4s both;
         }
 
@@ -384,6 +521,8 @@
             margin-top: 50px;
             text-align: center;
             border-top: 3px solid #4CAF50;
+            position: relative;
+            z-index: 10;
         }
 
         .footer-content {
@@ -432,12 +571,48 @@
             .modal-content {
                 max-width: 95%;
             }
+
+            .moon-decor {
+                top: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+            }
         }
     </style>
     <!-- Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- BACKGROUND ÉTOILÉ -->
+    <div class="stars-background">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+    </div>
+
+    <!-- Lune décorative -->
+    <div class="moon-decor"></div>
+
     <div class="container">
         <!-- Message de bienvenue -->
         <div class="welcome-card">
@@ -497,6 +672,7 @@
         <img class="modal-content" id="modalImage">
         <div id="modalCaption" class="modal-caption"></div>
     </div>
+    
     <div class="container">
         <!-- Message de bienvenue -->
         <div class="welcome-card">
@@ -507,6 +683,7 @@
             </div>
         </div>
     </div>
+    
     <div class="container">
         <!-- Message de bienvenue Mapinfo -->
         <div class="welcome-card">
@@ -515,23 +692,25 @@
             </div>
         </div>
     </div>
-        <!-- Section téléchargement Mapinfo -->
-            <div class="download-link-container1">
-                <div class="link-text">
-                    <i class="fas fa-link"></i>
-                    MapInfo
-                </div>
-                <a href="#" class="download-btn1" id="downloadBtn1">
-                    <i class="fas fa-cloud-download-alt"></i>
-                    Télécharger
-                </a>
+    
+    <!-- Section téléchargement Mapinfo -->
+    <div class="container">
+        <div class="download-link-container1">
+            <div class="link-text">
+                <i class="fas fa-link"></i>
+                MapInfo
             </div>
-            <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
-                <i class="fas fa-info-circle"></i> 
-                Cliquez sur le bouton pour commencer le téléchargement.
-            </p>
+            <a href="#" class="download-btn1" id="downloadBtn1">
+                <i class="fas fa-cloud-download-alt"></i>
+                Télécharger
+            </a>
+        </div>
+        <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
+            <i class="fas fa-info-circle"></i> 
+            Cliquez sur le bouton pour commencer le téléchargement.
+        </p>
     </div>
-    </div>
+
     <div class="container">
         <!-- Message de bienvenue Adobe -->
         <div class="welcome-card">
@@ -540,22 +719,25 @@
             </div>
         </div>
     </div>
-        <!-- Section téléchargement -->
-            <div class="download-link-container2">
-                <div class="link-text">
-                    <i class="fas fa-link"></i>
-                    Adobe illustrator
-                </div>
-                <a href="#" class="download-btn2" id="downloadBtn2">
-                    <i class="fas fa-cloud-download-alt"></i>
-                    Télécharger
-                </a>
+    
+    <!-- Section téléchargement Adobe -->
+    <div class="container">
+        <div class="download-link-container2">
+            <div class="link-text">
+                <i class="fas fa-link"></i>
+                Adobe illustrator
             </div>
-            <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
-                <i class="fas fa-info-circle"></i> 
-                Cliquez sur le bouton pour commencer le téléchargement.
-            </p>
+            <a href="#" class="download-btn2" id="downloadBtn2">
+                <i class="fas fa-cloud-download-alt"></i>
+                Télécharger
+            </a>
+        </div>
+        <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
+            <i class="fas fa-info-circle"></i> 
+            Cliquez sur le bouton pour commencer le téléchargement.
+        </p>
     </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
@@ -664,6 +846,29 @@
             stepsGrid.appendChild(stepCard);
         });
 
+        // Ajouter des étoiles supplémentaires aléatoirement
+        function addMoreStars() {
+            const starsContainer = document.querySelector('.stars-background');
+            if (!starsContainer) return;
+            
+            for (let i = 0; i < 30; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.cssText = `
+                    width: ${Math.random() * 4 + 1}px;
+                    height: ${Math.random() * 4 + 1}px;
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    --duration: ${Math.random() * 3 + 1}s;
+                    animation-delay: ${Math.random() * 5}s;
+                `;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Appeler la fonction pour plus d'étoiles
+        addMoreStars();
+
         // Modal functionality
         const modal = document.getElementById('imageModal');
         const closeBtn = document.getElementsByClassName('close-modal')[0];
@@ -770,9 +975,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
