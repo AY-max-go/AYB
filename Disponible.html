@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page en construction - IEGS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Vagues décoratives */
+        .waves {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 1000% 1000% 0 0;
+            animation: wave 6s infinite linear;
+        }
+
+        .wave:nth-child(2) {
+            bottom: 10px;
+            opacity: 0.5;
+            animation-delay: -2s;
+            animation-duration: 8s;
+        }
+
+        .wave:nth-child(3) {
+            bottom: 20px;
+            opacity: 0.3;
+            animation-delay: -4s;
+            animation-duration: 10s;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0) translateY(0) scaleX(1); }
+            50% { transform: translateX(-25%) translateY(5px) scaleX(1.2); }
+            100% { transform: translateX(-50%) translateY(0) scaleX(1); }
+        }
+
+        /* Conteneur principal */
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+            min-height: 80vh;
+        }
+
+        /* Carte principale */
+        .construction-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 50px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            animation: fadeInUp 0.6s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Icône */
+        .construction-icon {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Titre */
+        .title {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .title span {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Message */
+        .message {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .message i {
+            color: #ff9800;
+            margin: 0 5px;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+
+        /* Bouton de contact */
+        .contact-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Zone d'idées */
+        .ideas-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #ddd;
+        }
+
+        .ideas-title {
+            font-size: 1rem;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .idea-bubbles {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .idea-bubble {
+            background: #f0f0f0;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .idea-bubble:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Formulaire simple */
+        .idea-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .idea-input {
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .idea-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        textarea.idea-input {
+            border-radius: 20px;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .submit-idea {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-idea:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        /* Message de confirmation */
+        .confirmation {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 50px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        /* Lien retour */
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #999;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #667eea;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a2e;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            border-top: 2px solid #667eea;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .author {
+            font-size: 1rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .construction-card {
+                padding: 30px 20px;
+            }
+            
+            .title {
+                font-size: 1.5rem;
+            }
+            
+            .message {
+                font-size: 1rem;
+            }
+            
+            .construction-icon {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Vagues décoratives -->
+    <div class="waves">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <div class="container">
+        <div class="construction-card">
+            <!-- Icône animée -->
+            <div class="construction-icon">
+                🚧
+            </div>
+
+            <!-- Titre -->
+            <div class="title">
+                Page en <span>Construction</span>
+            </div>
+
+            <!-- Message principal -->
+            <div class="message">
+                <i class="fas fa-hard-hat"></i>
+                Cette page n'est pas encore disponible.
+                <i class="fas fa-tools"></i>
+            </div>
+
+            <div class="emoji">
+                🔨 ⏳ 🎨
+            </div>
+
+            <!-- Bouton de contact principal -->
+            <button class="contact-btn" id="contactBtn">
+                <i class="fas fa-envelope"></i> Proposer une idée
+            </button>
+
+            <!-- Suggestions rapides -->
+            <div class="ideas-section">
+                <div class="ideas-title">
+                    <i class="fas fa-lightbulb"></i> Suggestions populaires :
+                </div>
+                <div class="idea-bubbles">
+                    <span class="idea-bubble" data-idea="Tutoriels vidéo">📹 Tutoriels vidéo</span>
+                    <span class="idea-bubble" data-idea="Exercices pratiques">📝 Exercices pratiques</span>
+                    <span class="idea-bubble" data-idea="QCM interactifs">❓ QCM interactifs</span>
+                    <span class="idea-bubble" data-idea="Forum d'entraide">💬 Forum d'entraide</span>
+                    <span class="idea-bubble" data-idea="Certificats">📜 Certificats</span>
+                </div>
+
+                <!-- Formulaire personnalisé -->
+                    <button type="submit" class="submit-idea">
+                        <i class="fas fa-paper-plane"></i> Contactez moi via Whatsapp
+                    </button>
+                
+                <div class="confirmation" id="confirmationMsg">
+                    <i class="fas fa-check-circle"></i> Merci ! Votre idée a bien été envoyée.
+                </div>
+            </div>
+
+            <!-- Lien retour à l'accueil -->
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Retour à l'accueil
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="copyright">
+                <i class="far fa-copyright"></i> 2026 IEGS - Tous droits réservés
+            </div>
+            <div class="author">
+                <i class="fas fa-code"></i> By AYOUB ESSABIRI
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Gestionnaire du bouton de contact principal
+        document.getElementById('contactBtn').addEventListener('click', function() {
+            // Scroller vers le formulaire
+            document.querySelector('.ideas-section').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+            
+            // Mettre en évidence le formulaire
+            const form = document.getElementById('ideaForm');
+            form.style.transition = 'all 0.3s ease';
+            form.style.boxShadow = '0 0 0 3px #667eea';
+            setTimeout(() => {
+                form.style.boxShadow = '';
+            }, 1500);
+        });
+
+        // Clic sur les bulles d'idées
+        document.querySelectorAll('.idea-bubble').forEach(bubble => {
+            bubble.addEventListener('click', function() {
+                const idea = this.getAttribute('data-idea');
+                const suggestionInput = document.getElementById('suggestionInput');
+                const currentText = suggestionInput.value;
+                
+                if (currentText) {
+                    suggestionInput.value = currentText + '\n' + idea;
+                } else {
+                    suggestionInput.value = idea;
+                }
+                
+                // Focus sur le champ
+                suggestionInput.focus();
+            });
+        });
+
+        // Gestionnaire du formulaire
+        document.getElementById('ideaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('ideaInput').value;
+            const suggestion = document.getElementById('suggestionInput').value;
+            
+            if (!suggestion.trim()) {
+                alert("Veuillez entrer une suggestion avant d'envoyer.");
+                return;
+            }
+            
+            // Simuler l'envoi (vous pouvez remplacer par un vrai envoi email)
+            console.log("Suggestion envoyée :", { email, suggestion });
+            
+            // Afficher le message de confirmation
+            const confirmation = document.getElementById('confirmationMsg');
+            confirmation.style.display = 'block';
+            
+            // Réinitialiser le formulaire
+            document.getElementById('ideaInput').value = '';
+            document.getElementById('suggestionInput').value = '';
+            
+            // Cacher le message après 3 secondes
+            setTimeout(() => {
+                confirmation.style.display = 'none';
+            }, 3000);
+            
+            // Optionnel : envoyer par email
+            // window.location.href = `mailto:ayoub.essabiri@example.com?subject=Idée%20pour%20la%20page&body=${encodeURIComponent(suggestion)}`;
+        });
+        
+        // Animation simple au chargement
+        console.log("Page en construction - N'hésitez pas à partager vos idées !");
+    </script>
+</body>
+</html>
