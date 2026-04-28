@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Cours | IEGS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0c2b4b 0%, #1a4a6f 50%, #2e7d64 100%);
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Vagues animées */
+        .waves {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 1000% 1000% 0 0;
+            animation: wave 8s infinite linear;
+        }
+
+        .wave:nth-child(2) {
+            bottom: 10px;
+            opacity: 0.5;
+            animation-delay: -2s;
+            animation-duration: 10s;
+        }
+
+        .wave:nth-child(3) {
+            bottom: 20px;
+            opacity: 0.3;
+            animation-delay: -4s;
+            animation-duration: 12s;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0) translateY(0) scaleX(1); }
+            50% { transform: translateX(-25%) translateY(5px) scaleX(1.2); }
+            100% { transform: translateX(-50%) translateY(0) scaleX(1); }
+        }
+
+        /* Conteneur principal */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* En-tête */
+        .header {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            color: #0c2b4b;
+            margin-bottom: 10px;
+        }
+
+        .header h1 i {
+            color: #2e7d64;
+            margin-right: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        /* Barre de progression */
+        .progress-container {
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #2e7d64, #ffd700);
+            width: 0%;
+            height: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: right;
+            color: white;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        /* Question card */
+        .question-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease;
+        }
+
+        .question-card:hover {
+            transform: translateX(5px);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0c2b4b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .question-number {
+            background: #2e7d64;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-left: 38px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 12px;
+            transition: background 0.2s ease;
+        }
+
+        .option:hover {
+            background: rgba(46, 125, 100, 0.1);
+        }
+
+        .option input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #2e7d64;
+        }
+
+        .option label {
+            font-size: 0.95rem;
+            color: #333;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* Zone des résultats */
+        .results-section {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2e7d64, #0c2b4b);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+        }
+
+        .score-number {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .score-total {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .feedback-message {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 50px;
+        }
+
+        .feedback-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .feedback-warning {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #2e7d64, #0c2b4b);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-reset {
+            background: #6c757d;
+            margin-left: 15px;
+        }
+
+        .btn-reset:hover {
+            background: #5a6268;
+        }
+
+        /* Correction détaillée */
+        .correction-detail {
+            margin-top: 30px;
+            text-align: left;
+            border-top: 2px dashed #ddd;
+            padding-top: 20px;
+        }
+
+        .correction-title {
+            font-size: 1.2rem;
+            color: #0c2b4b;
+            margin-bottom: 15px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .correction-list {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .correction-list.show {
+            display: block;
+        }
+
+        .correction-item {
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 10px;
+            background: #f5f5f5;
+        }
+
+        .correction-item.correct {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+
+        .correction-item.wrong {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+
+        .correction-item .user-answer {
+            font-weight: bold;
+            color: #666;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(12, 43, 75, 0.95);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .author {
+            font-size: 1rem;
+            background: linear-gradient(45deg, #ffd700, #2e7d64);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .options {
+                padding-left: 0;
+            }
+            
+            .question-text {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="waves">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header">
+            <h1><i class="fas fa-gem"></i> QCM : Le Paléozoïque et la Chaîne Hercynienne</h1>
+            <p><i class="fas fa-map-marked-alt"></i> Géologie du Maroc - 20 questions | Chaque question vaut 1 point</p>
+        </div>
+
+        <!-- Barre de progression -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-text" id="progressText">0/20 questions répondues</div>
+
+        <!-- Formulaire QCM -->
+        <form id="qcmForm">
+            <!-- Les 20 questions seront générées ici par JavaScript -->
+        </form>
+
+        <!-- Section des résultats -->
+        <div class="results-section" id="resultsSection" style="display: none;">
+            <div class="score-circle">
+                <div class="score-number" id="scoreNumber">0</div>
+                <div class="score-total">/20</div>
+            </div>
+            <div class="feedback-message" id="feedbackMessage"></div>
+            <button class="btn-submit" id="showCorrectionBtn">
+                <i class="fas fa-eye"></i> Voir la correction détaillée
+            </button>
+            <button class="btn-submit btn-reset" id="resetBtn">
+                <i class="fas fa-redo"></i> Recommencer
+            </button>
+            
+            <div class="correction-detail" id="correctionDetail">
+                <div class="correction-title" id="toggleCorrection">
+                    <i class="fas fa-chevron-down"></i> Correction détaillée
+                </div>
+                <div class="correction-list" id="correctionList"></div>
+            </div>
+        </div>
+
+        <button class="btn-submit" id="submitBtn" style="width: 100%;">
+            <i class="fas fa-check-circle"></i> Corriger mon QCM
+        </button>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="author">
+                <i class="fas fa-code"></i> By AYOUB ESSABIRI 
+                <i class="fas fa-heart" style="color: #ff6b6b;"></i> | IEGS - Géologie & Eau
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Questions et réponses
+        const questions = [
+            { text: "Quelle est la durée totale estimée du Paléozoïque ?", options: ["A) Environ 200 millions d'années", "B) Environ 300 millions d'années", "C) Environ 400 millions d'années", "D) Environ 545 millions d'années"], correct: "B" },
+            { text: "Quel événement majeur de la vie caractérise le début du Cambrien ?", options: ["A) L'apparition des premières forêts", "B) La diversification des reptiles", "C) L'explosion cambrienne avec développement de la faune marine à coquille", "D) La crise biologique majeure"], correct: "C" },
+            { text: "La fin du Permien est marquée par :", options: ["A) L'apparition des premiers amphibiens", "B) Une transgression marine généralisée", "C) Une crise biologique ayant fait disparaître environ 80% des espèces", "D) La formation des premiers récifs coralliens"], correct: "C" },
+            { text: "Laquelle de ces périodes n'appartient PAS au Paléozoïque supérieur ?", options: ["A) Dévonien", "B) Carbonifère", "C) Ordovicien", "D) Permien"], correct: "C" },
+            { text: "L'orogenèse hercynienne (ou varisque) au Maroc est principalement datée du :", options: ["A) Cambrien", "B) Paléozoïque inférieur", "C) Paléozoïque supérieur", "D) Précambrien"], correct: "C" },
+            { text: "Dans l'Anti-Atlas marocain, la série paléozoïque est caractérisée par :", options: ["A) Un métamorphisme intense de type amphibolite", "B) De nombreuses intrusions granitiques synchrone de la déformation", "C) Une déformation modérée (plis kilométriques) sans métamorphisme ni granites associés", "D) Des nappes de charriage issues d'un chevauchement vers l'est"], correct: "C" },
+            { text: "Quelle est la principale roche mère des gisements de pétrole et de gaz au Sahara, déposée au Silurien ?", options: ["A) Les calcaires récifaux", "B) Les grès du Tabanit", "C) Les argilites noires (black shales) à graptolites", "D) Les basaltes tholéiitiques"], correct: "C" },
+            { text: "Au Maroc, la glaciation fini-ordovicienne est attestée par la présence de :", options: ["A) D'épaisses séquences de charbon", "B) D'argiles micro-conglomératiques à stries glaciaires (Plancher strié du Bani II)", "C) De vastes constructions récifales", "D) De flyschs turbiditiques épais"], correct: "B" },
+            { text: "Au Dévonien, le Groupe des 'Rich' dans l'Anti-Atlas correspond à :", options: ["A) Des dépôts continentaux rouges", "B) Une alternance de grès et calcaires à riche faune de goniatites", "C) Des schistes à paradoxites", "D) Des argilites noires uniquement"], correct: "B" },
+            { text: "La 'révolution famennienne' au Maroc se traduit par :", options: ["A) La disparition des trilobites", "B) La formation de la Pangée", "C) La dislocation de la plateforme dévonienne et la formation de nouveaux bassins sédimentaires", "D) L'émersion définitive de l'Anti-Atlas"], correct: "C" },
+            { text: "Dans la Meseta occidentale marocaine, l'épaisseur des schistes à paradoxites au Cambrien moyen peut atteindre :", options: ["A) 100 mètres", "B) 1000 mètres", "C) 3000 mètres", "D) 6000 mètres"], correct: "D" },
+            { text: "La zone orientale de la chaîne hercynienne marocaine (Meseta orientale) est caractérisée par :", options: ["A) Une déformation tardive (Westphalienne)", "B) Une déformation précoce (anté-viséenne, vers 360 Ma)", "C) L'absence totale de déformation", "D) Un métamorphisme de haut grade (faciès granulite)"], correct: "B" },
+            { text: "Quel type de magmatisme est associé au contexte distensif du Carbonifère dans la Meseta occidentale ?", options: ["A) Uniquement des granites d'anatexie", "B) Des basaltes, dolérites et gabbros de nature alcaline à tholéiitique", "C) Un volcanisme explosif rhyolitique", "D) Aucun magmatisme, uniquement du métamorphisme"], correct: "B" },
+            { text: "Quel est l'âge de la déformation majeure (phase post-viséenne) dans la zone occidentale (Meseta occidentale) ?", options: ["A) Dévonien supérieur (360 Ma)", "B) Viséen (330 Ma)", "C) Namuro-Westphalien (~300 Ma)", "D) Permien (250 Ma)"], correct: "C" },
+            { text: "La chaîne hercynienne au Maroc résulte de :", options: ["A) Une seule phase de compression homogène sur tout le territoire", "B) Un diachronisme de la déformation, de l'est (plus précoce) vers l'ouest (plus tardif)", "C) Un épisode de distension pure sans aucune compression", "D) Une collision uniquement dans l'Anti-Atlas"], correct: "B" },
+            { text: "Les bassins permiens au Maroc (ex. bassin d'Argana) sont caractérisés par :", options: ["A) Des dépôts marins profonds (flyschs)", "B) Des dépôts rouges détritiques continentaux (conglomérats, grès, argilites)", "C) D'épaisses séquences de calcaires récifaux", "D) Des tillites glaciaires"], correct: "B" },
+            { text: "Au Carbonifère supérieur, la sédimentation dans l'Anti-Atlas devient continentale (grès rouges) en raison :", options: ["A) D'une transgression marine majeure", "B) De la fonte des glaciers sahariens", "C) De l'émersion liée à l'orogenèse hercynienne", "D) De la mise en place de grands récifs barrières"], correct: "C" },
+            { text: "Les 'olistostromes' observés dans les Jebilet orientales sont la preuve de :", options: ["A) D'éruptions volcaniques sous-marines", "B) De glissements gravitaires synsédimentaires liés à l'instabilité tectonique", "C) D'une sédimentation calme en eau profonde", "D) D'un environnement désertique"], correct: "B" },
+            { text: "L'orogenèse hercynienne contribue à la formation d'un mégacontinent appelé :", options: ["A) Rodinia", "B) Gondwana", "C) Laurasia", "D) Pangée"], correct: "D" },
+            { text: "Dans l'Anti-Atlas, le passage Protérozoïque-Paléozoïque est marqué par :", options: ["A) Une discordance angulaire majeure avec plissement intense", "B) Une transgression marine avec les premiers dépôts en faible discordance sur le Néoprotérozoïque", "C) Une éruption volcanique généralisée", "D) Un métamorphisme de contact"], correct: "B" }
+        ];
+
+        // Générer le formulaire
+        const formContainer = document.getElementById('qcmForm');
+        
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-card';
+            questionDiv.id = `q${index}`;
+            
+            let optionsHtml = '';
+            q.options.forEach(opt => {
+                const letter = opt.charAt(0);
+                optionsHtml += `
+                    <div class="option">
+                        <input type="radio" name="q${index}" value="${letter}" id="q${index}_${letter}">
+                        <label for="q${index}_${letter}">${opt}</label>
+                    </div>
+                `;
+            });
+            
+            questionDiv.innerHTML = `
+                <div class="question-text">
+                    <span class="question-number">${index + 1}</span>
+                    <span>${q.text}</span>
+                </div>
+                <div class="options">
+                    ${optionsHtml}
+                </div>
+            `;
+            
+            formContainer.appendChild(questionDiv);
+        });
+
+        // Mettre à jour la barre de progression
+        function updateProgress() {
+            let answered = 0;
+            for (let i = 0; i < questions.length; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) answered++;
+            }
+            const percent = (answered / questions.length) * 100;
+            document.getElementById('progressBar').style.width = `${percent}%`;
+            document.getElementById('progressText').innerHTML = `${answered}/${questions.length} questions répondues`;
+        }
+
+        // Écouter les changements sur tous les radios
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', updateProgress);
+        });
+
+        // Correction
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            let score = 0;
+            const userAnswers = [];
+            
+            for (let i = 0; i < questions.length; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                const userAnswer = selected ? selected.value : null;
+                userAnswers.push(userAnswer);
+                if (userAnswer === questions[i].correct) {
+                    score++;
+                }
+            }
+            
+            // Afficher les résultats
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('scoreNumber').innerHTML = score;
+            
+            const feedbackDiv = document.getElementById('feedbackMessage');
+            if (score < 12) {
+                feedbackDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Va réviser ton cours ! <i class="fas fa-book"></i>';
+                feedbackDiv.className = 'feedback-message feedback-warning';
+            } else if (score >= 12 && score < 16) {
+                feedbackDiv.innerHTML = '<i class="fas fa-thumbs-up"></i> Bon travail ! Mais tu peux encore t\'améliorer. <i class="fas fa-graduation-cap"></i>';
+                feedbackDiv.className = 'feedback-message feedback-success';
+            } else {
+                feedbackDiv.innerHTML = '<i class="fas fa-trophy"></i> Excellent ! Tu maîtrises parfaitement le sujet ! <i class="fas fa-star"></i>';
+                feedbackDiv.className = 'feedback-message feedback-success';
+            }
+            
+            // Générer la correction détaillée
+            const correctionList = document.getElementById('correctionList');
+            correctionList.innerHTML = '';
+            
+            questions.forEach((q, i) => {
+                const userAnswer = userAnswers[i];
+                const isCorrect = userAnswer === q.correct;
+                const correctLetter = q.correct;
+                const correctText = q.options.find(opt => opt.startsWith(correctLetter));
+                const userLetter = userAnswer ? userAnswer : "Non répondue";
+                const userText = userAnswer ? q.options.find(opt => opt.startsWith(userAnswer)) : "Aucune réponse sélectionnée";
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `correction-item ${isCorrect ? 'correct' : 'wrong'}`;
+                itemDiv.innerHTML = `
+                    <strong>Question ${i+1}:</strong> ${q.text}<br>
+                    <span class="user-answer">Votre réponse: ${userLetter}. ${userText || ''}</span><br>
+                    <strong>✅ Réponse correcte: ${correctLetter}. ${correctText}</strong>
+                `;
+                correctionList.appendChild(itemDiv);
+            });
+            
+            // Désactiver le bouton submit
+            document.getElementById('submitBtn').style.display = 'none';
+            
+            // Faire défiler vers les résultats
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Reset
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'block';
+            updateProgress();
+        });
+        
+        // Afficher/masquer la correction
+        document.getElementById('toggleCorrection').addEventListener('click', function() {
+            const correctionList = document.getElementById('correctionList');
+            correctionList.classList.toggle('show');
+            const icon = this.querySelector('i');
+            if (correctionList.classList.contains('show')) {
+                icon.className = 'fas fa-chevron-up';
+            } else {
+                icon.className = 'fas fa-chevron-down';
+            }
+        });
+        
+        // Initialiser la progression
+        updateProgress();
+    </script>
+</body>
+</html>
