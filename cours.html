@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Cours | IEGS</title>
+    <title>QCM - Trias, Jurassique, Crétacé & Cénozoïque | IEGS</title>
     <style>
         * {
             margin: 0;
@@ -14,7 +14,7 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #0c2b4b 0%, #1a4a6f 50%, #2e7d64 100%);
+            background: linear-gradient(135deg, #2b5e3b 0%, #1b4a3b 50%, #0d3b2e 100%);
             position: relative;
             padding: 20px;
         }
@@ -82,18 +82,34 @@
 
         .header h1 {
             font-size: 1.8rem;
-            color: #0c2b4b;
+            color: #1b4a3b;
             margin-bottom: 10px;
         }
 
         .header h1 i {
-            color: #2e7d64;
+            color: #ffd700;
             margin-right: 10px;
         }
 
         .header p {
             color: #666;
             font-size: 1rem;
+        }
+
+        .timeline-badge {
+            display: inline-flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .timeline-badge span {
+            background: #2b5e3b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.8rem;
         }
 
         /* Barre de progression */
@@ -105,7 +121,7 @@
         }
 
         .progress-bar {
-            background: linear-gradient(90deg, #2e7d64, #ffd700);
+            background: linear-gradient(90deg, #2b5e3b, #ffd700);
             width: 0%;
             height: 10px;
             transition: width 0.3s ease;
@@ -136,7 +152,7 @@
         .question-text {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #0c2b4b;
+            color: #1b4a3b;
             margin-bottom: 15px;
             display: flex;
             align-items: baseline;
@@ -144,7 +160,7 @@
         }
 
         .question-number {
-            background: #2e7d64;
+            background: #2b5e3b;
             color: white;
             width: 28px;
             height: 28px;
@@ -174,14 +190,14 @@
         }
 
         .option:hover {
-            background: rgba(46, 125, 100, 0.1);
+            background: rgba(43, 94, 59, 0.1);
         }
 
         .option input {
             width: 18px;
             height: 18px;
             cursor: pointer;
-            accent-color: #2e7d64;
+            accent-color: #2b5e3b;
         }
 
         .option label {
@@ -206,13 +222,14 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #2e7d64, #0c2b4b);
+            background: linear-gradient(135deg, #2b5e3b, #1b4a3b);
             margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             color: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
         }
 
         .score-number {
@@ -243,8 +260,13 @@
             color: #721c24;
         }
 
+        .feedback-excellent {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
         .btn-submit {
-            background: linear-gradient(135deg, #2e7d64, #0c2b4b);
+            background: linear-gradient(135deg, #2b5e3b, #1b4a3b);
             color: white;
             border: none;
             padding: 15px 40px;
@@ -280,7 +302,7 @@
 
         .correction-title {
             font-size: 1.2rem;
-            color: #0c2b4b;
+            color: #1b4a3b;
             margin-bottom: 15px;
             cursor: pointer;
             display: inline-block;
@@ -289,6 +311,8 @@
         .correction-list {
             display: none;
             margin-top: 15px;
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         .correction-list.show {
@@ -296,7 +320,7 @@
         }
 
         .correction-item {
-            padding: 10px;
+            padding: 12px;
             margin: 8px 0;
             border-radius: 10px;
             background: #f5f5f5;
@@ -319,7 +343,7 @@
 
         /* Footer */
         .footer {
-            background: rgba(12, 43, 75, 0.95);
+            background: rgba(27, 74, 59, 0.95);
             color: white;
             padding: 20px 0;
             text-align: center;
@@ -329,7 +353,7 @@
 
         .author {
             font-size: 1rem;
-            background: linear-gradient(45deg, #ffd700, #2e7d64);
+            background: linear-gradient(45deg, #ffd700, #2b5e3b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -346,6 +370,10 @@
             .header h1 {
                 font-size: 1.3rem;
             }
+            
+            .feedback-message {
+                font-size: 1.1rem;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -360,8 +388,14 @@
     <div class="container">
         <!-- En-tête -->
         <div class="header">
-            <h1><i class="fas fa-gem"></i> QCM : Le Paléozoïque et la Chaîne Hercynienne</h1>
-            <p><i class="fas fa-map-marked-alt"></i> Géologie du Maroc - 20 questions | Chaque question vaut 1 point</p>
+            <h1><i class="fas fa-dragon"></i> QCM : Trias, Jurassique, Crétacé & Cénozoïque</h1>
+            <p><i class="fas fa-map-marked-alt"></i> Géologie du Maroc - Mésozoïque & Cénozoïque | 20 questions</p>
+            <div class="timeline-badge">
+                <span><i class="fas fa-skull"></i> Trias (252-201 Ma)</span>
+                <span><i class="fas fa-dinosaur"></i> Jurassique (201-145 Ma)</span>
+                <span><i class="fas fa-fish"></i> Crétacé (145-66 Ma)</span>
+                <span><i class="fas fa-mammoth"></i> Cénozoïque (66 Ma - présent)</span>
+            </div>
         </div>
 
         <!-- Barre de progression -->
@@ -371,9 +405,7 @@
         <div class="progress-text" id="progressText">0/20 questions répondues</div>
 
         <!-- Formulaire QCM -->
-        <form id="qcmForm">
-            <!-- Les 20 questions seront générées ici par JavaScript -->
-        </form>
+        <form id="qcmForm"></form>
 
         <!-- Section des résultats -->
         <div class="results-section" id="resultsSection" style="display: none;">
@@ -411,28 +443,28 @@
     </div>
 
     <script>
-        // Questions et réponses
+        // Questions et réponses (uniquement Trias, Jurassique, Crétacé, Cénozoïque)
         const questions = [
-            { text: "Quelle est la durée totale estimée du Paléozoïque ?", options: ["A) Environ 200 millions d'années", "B) Environ 300 millions d'années", "C) Environ 400 millions d'années", "D) Environ 545 millions d'années"], correct: "B" },
-            { text: "Quel événement majeur de la vie caractérise le début du Cambrien ?", options: ["A) L'apparition des premières forêts", "B) La diversification des reptiles", "C) L'explosion cambrienne avec développement de la faune marine à coquille", "D) La crise biologique majeure"], correct: "C" },
-            { text: "La fin du Permien est marquée par :", options: ["A) L'apparition des premiers amphibiens", "B) Une transgression marine généralisée", "C) Une crise biologique ayant fait disparaître environ 80% des espèces", "D) La formation des premiers récifs coralliens"], correct: "C" },
-            { text: "Laquelle de ces périodes n'appartient PAS au Paléozoïque supérieur ?", options: ["A) Dévonien", "B) Carbonifère", "C) Ordovicien", "D) Permien"], correct: "C" },
-            { text: "L'orogenèse hercynienne (ou varisque) au Maroc est principalement datée du :", options: ["A) Cambrien", "B) Paléozoïque inférieur", "C) Paléozoïque supérieur", "D) Précambrien"], correct: "C" },
-            { text: "Dans l'Anti-Atlas marocain, la série paléozoïque est caractérisée par :", options: ["A) Un métamorphisme intense de type amphibolite", "B) De nombreuses intrusions granitiques synchrone de la déformation", "C) Une déformation modérée (plis kilométriques) sans métamorphisme ni granites associés", "D) Des nappes de charriage issues d'un chevauchement vers l'est"], correct: "C" },
-            { text: "Quelle est la principale roche mère des gisements de pétrole et de gaz au Sahara, déposée au Silurien ?", options: ["A) Les calcaires récifaux", "B) Les grès du Tabanit", "C) Les argilites noires (black shales) à graptolites", "D) Les basaltes tholéiitiques"], correct: "C" },
-            { text: "Au Maroc, la glaciation fini-ordovicienne est attestée par la présence de :", options: ["A) D'épaisses séquences de charbon", "B) D'argiles micro-conglomératiques à stries glaciaires (Plancher strié du Bani II)", "C) De vastes constructions récifales", "D) De flyschs turbiditiques épais"], correct: "B" },
-            { text: "Au Dévonien, le Groupe des 'Rich' dans l'Anti-Atlas correspond à :", options: ["A) Des dépôts continentaux rouges", "B) Une alternance de grès et calcaires à riche faune de goniatites", "C) Des schistes à paradoxites", "D) Des argilites noires uniquement"], correct: "B" },
-            { text: "La 'révolution famennienne' au Maroc se traduit par :", options: ["A) La disparition des trilobites", "B) La formation de la Pangée", "C) La dislocation de la plateforme dévonienne et la formation de nouveaux bassins sédimentaires", "D) L'émersion définitive de l'Anti-Atlas"], correct: "C" },
-            { text: "Dans la Meseta occidentale marocaine, l'épaisseur des schistes à paradoxites au Cambrien moyen peut atteindre :", options: ["A) 100 mètres", "B) 1000 mètres", "C) 3000 mètres", "D) 6000 mètres"], correct: "D" },
-            { text: "La zone orientale de la chaîne hercynienne marocaine (Meseta orientale) est caractérisée par :", options: ["A) Une déformation tardive (Westphalienne)", "B) Une déformation précoce (anté-viséenne, vers 360 Ma)", "C) L'absence totale de déformation", "D) Un métamorphisme de haut grade (faciès granulite)"], correct: "B" },
-            { text: "Quel type de magmatisme est associé au contexte distensif du Carbonifère dans la Meseta occidentale ?", options: ["A) Uniquement des granites d'anatexie", "B) Des basaltes, dolérites et gabbros de nature alcaline à tholéiitique", "C) Un volcanisme explosif rhyolitique", "D) Aucun magmatisme, uniquement du métamorphisme"], correct: "B" },
-            { text: "Quel est l'âge de la déformation majeure (phase post-viséenne) dans la zone occidentale (Meseta occidentale) ?", options: ["A) Dévonien supérieur (360 Ma)", "B) Viséen (330 Ma)", "C) Namuro-Westphalien (~300 Ma)", "D) Permien (250 Ma)"], correct: "C" },
-            { text: "La chaîne hercynienne au Maroc résulte de :", options: ["A) Une seule phase de compression homogène sur tout le territoire", "B) Un diachronisme de la déformation, de l'est (plus précoce) vers l'ouest (plus tardif)", "C) Un épisode de distension pure sans aucune compression", "D) Une collision uniquement dans l'Anti-Atlas"], correct: "B" },
-            { text: "Les bassins permiens au Maroc (ex. bassin d'Argana) sont caractérisés par :", options: ["A) Des dépôts marins profonds (flyschs)", "B) Des dépôts rouges détritiques continentaux (conglomérats, grès, argilites)", "C) D'épaisses séquences de calcaires récifaux", "D) Des tillites glaciaires"], correct: "B" },
-            { text: "Au Carbonifère supérieur, la sédimentation dans l'Anti-Atlas devient continentale (grès rouges) en raison :", options: ["A) D'une transgression marine majeure", "B) De la fonte des glaciers sahariens", "C) De l'émersion liée à l'orogenèse hercynienne", "D) De la mise en place de grands récifs barrières"], correct: "C" },
-            { text: "Les 'olistostromes' observés dans les Jebilet orientales sont la preuve de :", options: ["A) D'éruptions volcaniques sous-marines", "B) De glissements gravitaires synsédimentaires liés à l'instabilité tectonique", "C) D'une sédimentation calme en eau profonde", "D) D'un environnement désertique"], correct: "B" },
-            { text: "L'orogenèse hercynienne contribue à la formation d'un mégacontinent appelé :", options: ["A) Rodinia", "B) Gondwana", "C) Laurasia", "D) Pangée"], correct: "D" },
-            { text: "Dans l'Anti-Atlas, le passage Protérozoïque-Paléozoïque est marqué par :", options: ["A) Une discordance angulaire majeure avec plissement intense", "B) Une transgression marine avec les premiers dépôts en faible discordance sur le Néoprotérozoïque", "C) Une éruption volcanique généralisée", "D) Un métamorphisme de contact"], correct: "B" }
+            { text: "Le Cénozoïque, appelé \"l'âge des mammifères\", englobe :", options: ["A) Le Trias et le Jurassique", "B) Le Crétacé et le Paléogène", "C) Le Tertiaire et le Quaternaire", "D) Le Paléogène et le Néogène uniquement"], correct: "C" },
+            { text: "D'après le document, l'apparition d'Homo sapiens au Maroc est datée d'environ :", options: ["A) 2 millions d'années", "B) 65 millions d'années", "C) 300 000 ans", "D) 10 000 ans"], correct: "C" },
+            { text: "La crise de salinité messinienne, qui a provoqué l'assèchement quasi-complet de la Méditerranée, s'est produite il y a environ :", options: ["A) 23 Ma", "B) 6 Ma", "C) 65 Ma", "D) 250 Ma"], correct: "B" },
+            { text: "Au Quaternaire du Maroc atlantique (Doukkala, Chaouia), le cycle marin Ouljien correspond au stade :", options: ["A) Sicilien", "B) Tyrrhénien", "C) Calabrien", "D) Versilien"], correct: "B" },
+            { text: "La dislocation de la Pangée commence au Trias, conduisant à la formation de :", options: ["A) La Téthys uniquement", "B) La Laurasia au nord et le Gondwana au sud", "C) L'océan Pacifique", "D) La chaîne hercynienne"], correct: "B" },
+            { text: "Au Maroc, la trilogie classique du Trias associe de la base au sommet :", options: ["A) Calcaires, marnes et grès", "B) Grès fins, calcaires récifaux et évaporites", "C) Conglomérats/grès rouges, basaltes/dolérites, évaporites", "D) Flyschs, olistostromes et radiolarites"], correct: "C" },
+            { text: "Les bassins triasiques marocains (ex. Argana, Haut Atlas) sont des bassins de type 'pull-apart' contrôlés par :", options: ["A) Des failles normales héritées de l'orogenèse hercynienne", "B) Des plis de type 'ridge'", "C) Des diapirs de sel", "D) Des dépôts glaciaires"], correct: "A" },
+            { text: "Au Jurassique, la structuration du Haut Atlas en 'rides' et 'dépotcentres' résulte :", options: ["A) D'une compression intense", "B) D'une tectonique distensive en blocs basculés", "C) D'un volcanisme explosif", "D) D'une érosion glaciaire"], correct: "B" },
+            { text: "Dans le Haut Atlas central, le 'Calcaire corniche' caractéristique se dépose au :", options: ["A) Lias inférieur", "B) Bajocien supérieur", "C) Malm (Jurassique supérieur)", "D) Tithonique"], correct: "B" },
+            { text: "Au Crétacé inférieur (Néocomien à Albien), la plus grande partie du Maroc est le siège :", options: ["A) D'une transgression marine généralisée", "B) D'une sédimentation détritique rouge continentale (érosion des reliefs jurassiques)", "C) D'un épais dépôt de phosphates", "D) D'un volcanisme de type trapps"], correct: "B" },
+            { text: "La grande transgression marine du Cénomano-Turonien est marquée par le dépôt :", options: ["A) Des argilites noires à graptolites", "B) Des grès de l'Oukaimeden", "C) De la dalle turonienne (calcaires blancs à ammonites)", "D) Des basaltes en coussins"], correct: "C" },
+            { text: "Les principaux gisements de phosphates marocains (Khouribga, Youssoufia) se sont formés au :", options: ["A) Trias", "B) Jurassique supérieur", "C) Maastrichtien à Éocène inférieur", "D) Miocène"], correct: "C" },
+            { text: "Dans le bassin de Tarfaya, le Crétacé inférieur est caractérisé par :", options: ["A) Un épais prisme détritique (4 000 m)", "B) Des récifs coralliens géants", "C) Des évaporites massives", "D) Des calcaires lithographiques"], correct: "A" },
+            { text: "Au Cénozoïque, dans la région de Toundoute (Haut Atlas), la formation de Kandoula montre des dépôts :", options: ["A) Uniquement marins profonds", "B) De cônes alluviaux, argilites, calcaires bitumineux et conglomérats (environnements continental à lagunaire)", "C) De flyschs turbiditiques", "D) De tillites glaciaires"], correct: "B" },
+            { text: "Au Miocène, dans le bassin de Rabat, les 'marnes bleues du Bouregreg' sont attribuées à l'étage :", options: ["A) Tortonien", "B) Helvétien (Miocène moyen)", "C) Messinien", "D) Aquitanien"], correct: "B" },
+            { text: "La 'Nappe numidienne' du Rif est un flysch principalement gréseux daté de l' :", options: ["A) Éocène", "B) Oligocène-Miocène inférieur", "C) Crétacé supérieur", "D) Pliocène"], correct: "B" },
+            { text: "Au Quaternaire continental du Maroc, le cycle du Soltanien correspond au stade glaciaire alpin :", options: ["A) Günz", "B) Mindel", "C) Riss", "D) Würm"], correct: "D" },
+            { text: "Dans le Haut Atlas occidental, la série du Lias est essentiellement :", options: ["A) Détritique rouge", "B) Dolomitique (carbonatée)", "C) Évaporitique", "D) Volcanique"], correct: "B" },
+            { text: "Au Maroc, le Jurassique supérieur (Malm) est souvent :", options: ["A) Très épais (plus de 1000 m) dans tout le pays", "B) Absent ou lacunaire en raison d'une émersion généralisée dans les zones atlasiques", "C) Uniquement marin profond", "D) Représenté par des charbons"], correct: "B" },
+            { text: "La reconnexion entre la Méditerranée et l'Atlantique à la fin du Messinien s'est faite par :", options: ["A) Le détroit de Sicile", "B) L'ouverture de l'isthme de Gibraltar", "C) Le corridor sud-rifain", "D) La vallée du Nil"], correct: "B" }
         ];
 
         // Générer le formulaire
@@ -511,7 +543,7 @@
                 feedbackDiv.className = 'feedback-message feedback-success';
             } else {
                 feedbackDiv.innerHTML = '<i class="fas fa-trophy"></i> Excellent ! Tu maîtrises parfaitement le sujet ! <i class="fas fa-star"></i>';
-                feedbackDiv.className = 'feedback-message feedback-success';
+                feedbackDiv.className = 'feedback-message feedback-excellent';
             }
             
             // Générer la correction détaillée
@@ -530,7 +562,7 @@
                 itemDiv.className = `correction-item ${isCorrect ? 'correct' : 'wrong'}`;
                 itemDiv.innerHTML = `
                     <strong>Question ${i+1}:</strong> ${q.text}<br>
-                    <span class="user-answer">Votre réponse: ${userLetter}. ${userText || ''}</span><br>
+                    <span class="user-answer">📌 Votre réponse: ${userLetter}. ${userText || ''}</span><br>
                     <strong>✅ Réponse correcte: ${correctLetter}. ${correctText}</strong>
                 `;
                 correctionList.appendChild(itemDiv);
