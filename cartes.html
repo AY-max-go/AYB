@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartes Géologiques - Téléchargement | IEGS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1b3a2e 0%, #2d5a4a 50%, #1a4a3a 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #1b3a2e;
+        }
+
+        .header h1 i {
+            color: #ffd700;
+            margin-right: 10px;
+        }
+
+        .header p {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .search-section {
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            background: rgba(255,255,255,0.95);
+            border-radius: 50px;
+            padding: 5px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 15px 0;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #ffd700;
+            color: #1b3a2e;
+        }
+
+        .maps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .map-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .map-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .map-image {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .map-type {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+
+        .map-info {
+            padding: 20px;
+        }
+
+        .map-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1b3a2e;
+            margin-bottom: 8px;
+        }
+
+        .map-details {
+            display: flex;
+            gap: 15px;
+            margin: 12px 0;
+            font-size: 0.85rem;
+            color: #666;
+            flex-wrap: wrap;
+        }
+
+        .map-details i {
+            color: #2d5a4a;
+            width: 20px;
+        }
+
+        .map-description {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #2d5a4a, #1b3a2e);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, #1b3a2e, #0d2a1e);
+        }
+
+        .footer {
+            background: rgba(27, 58, 46, 0.95);
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .author {
+            font-size: 1rem;
+            background: linear-gradient(45deg, #ffd700, #2d5a4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .maps-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-map"></i> Cartes Géologiques</h1>
+            <p><i class="fab fa-google-drive"></i> Cliquez sur Télécharger pour accéder au fichier sur Google Drive</p>
+        </div>
+
+        <div class="search-section">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Rechercher une carte...">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Toutes</button>
+                <button class="filter-btn" data-filter="geologique">Géologiques</button>
+                <button class="filter-btn" data-filter="topographique">Topographiques</button>
+                <button class="filter-btn" data-filter="hydro">Hydrogéologiques</button>
+            </div>
+        </div>
+
+        <div class="maps-grid" id="mapsGrid"></div>
+
+        <div class="footer">
+            <div class="author">
+                <i class="fas fa-code"></i> By AYOUB ESSABIRI 
+                <i class="fas fa-heart" style="color: #ff6b6b;"></i> | IEGS
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // METTEZ VOS LIENS GOOGLE DRIVE ICI
+        // ============================================
+        
+        const mapDatabase = [
+            {
+                id: 1,
+                title: "Carte Géologique du Beni Mellal 1/100 000",
+                region: "Maroc",
+                type: "geologique",
+                size: "39.4 MB",
+                year: "",
+                description: "Par le service du géologie du Maroc",
+                imageUrl: "https://via.placeholder.com/400x200/2d5a4a/ffffff?text=Carte+G%C3%A9ologique",
+                driveLink: "https://drive.google.com/file/d/1r-ZMVcSUqjCTaMCCCCitPmx0QQ_RnX9X/view?usp=sharing"  // ← METTEZ VOTRE LIEN ICI
+            },
+            {
+                id: 2,
+                title: "Pas disponible",
+                region: "Haut Atlas",
+                type: "geologique",
+                size: "8 MB",
+                year: "2015",
+                description: "Carte détaillée du Haut Atlas central",
+                imageUrl: "https://via.placeholder.com/400x200/3a6b5a/ffffff?text=Haut+Atlas",
+                driveLink: "disponible.html"  // ← METTEZ VOTRE LIEN ICI
+            },
+            {
+                id: 3,
+                title: "Pas disponible",
+                region: "Marrakech",
+                type: "topographique",
+                size: "5 MB",
+                year: "2020",
+                description: "Carte topographique de la région de Marrakech",
+                imageUrl: "https://via.placeholder.com/400x200/4a7b5a/ffffff?text=Marrakech",
+                driveLink: "disponible.html"  // ← METTEZ VOTRE LIEN ICI
+            },
+            {
+                id: 4,
+                title: "Pas disponible",
+                region: "Maroc",
+                type: "hydro",
+                size: "15 MB",
+                year: "2019",
+                description: "Carte des ressources en eau souterraine",
+                imageUrl: "https://via.placeholder.com/400x200/2d5a4a/ffffff?text=Hydrog%C3%A9ologique",
+                driveLink: "disponible.html"  // ← METTEZ VOTRE LIEN ICI
+            },
+            {
+                id: 5,
+                title: "Pas disponible",
+                region: "Anti-Atlas",
+                type: "geologique",
+                size: "9 MB",
+                year: "2017",
+                description: "Carte géologique de l'Anti-Atlas marocain",
+                imageUrl: "https://via.placeholder.com/400x200/3a5a4a/ffffff?text=Anti-Atlas",
+                driveLink: "disponible.html"  // ← METTEZ VOTRE LIEN ICI
+            },
+            {
+                id: 6,
+                title: "Pas disponible",
+                region: "Rif",
+                type: "geologique",
+                size: "11 MB",
+                year: "2016",
+                description: "Carte géologique de la chaîne rifaine",
+                imageUrl: "https://via.placeholder.com/400x200/4a6a5a/ffffff?text=Rif",
+                driveLink: "disponible.html"  // ← METTEZ VOTRE LIEN ICI
+            }
+        ];
+
+        const mapsGrid = document.getElementById('mapsGrid');
+        let currentFilter = 'all';
+        let searchTerm = '';
+
+        function renderMaps() {
+            const filteredMaps = mapDatabase.filter(map => {
+                const matchFilter = currentFilter === 'all' || map.type === currentFilter;
+                const matchSearch = searchTerm === '' || 
+                    map.title.toLowerCase().includes(searchTerm) ||
+                    map.region.toLowerCase().includes(searchTerm);
+                return matchFilter && matchSearch;
+            });
+
+            if (filteredMaps.length === 0) {
+                mapsGrid.innerHTML = `<div class="no-results"><i class="fas fa-search"></i><h3>Aucune carte trouvée</h3></div>`;
+                return;
+            }
+
+            mapsGrid.innerHTML = filteredMaps.map(map => `
+                <div class="map-card">
+                    <div class="map-image" style="background-image: url('${map.imageUrl}')">
+                        <span class="map-type">${map.type === 'geologique' ? '🗺️ Géologique' : map.type === 'topographique' ? '⛰️ Topographique' : '💧 Hydrogéologique'}</span>
+                    </div>
+                    <div class="map-info">
+                        <div class="map-title">${map.title}</div>
+                        <div class="map-details">
+                            <span><i class="fas fa-map-marker-alt"></i> ${map.region}</span>
+                            <span><i class="far fa-calendar-alt"></i> ${map.year}</span>
+                            <span><i class="fas fa-file-pdf"></i> ${map.size}</span>
+                        </div>
+                        <div class="map-description">${map.description}</div>
+                        <a href="${map.driveLink}" target="_blank" class="download-btn">
+                            <i class="fab fa-google-drive"></i> Télécharger depuis Drive
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filtres
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.getAttribute('data-filter');
+                renderMaps();
+            });
+        });
+
+        // Recherche
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchTerm = e.target.value.toLowerCase();
+            renderMaps();
+        });
+
+        renderMaps();
+    </script>
+</body>
+</html>
